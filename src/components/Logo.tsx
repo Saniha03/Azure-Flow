@@ -14,14 +14,8 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', className = '' }) => {
 
   return (
     <div className={`${sizeClasses[size]} ${className} flex items-center justify-center`}>
-      {/* Temporary logo using emoji until you add your image */}
-      <div className="text-royal-blue font-bold text-2xl">
-        💙
-      </div>
-      {/* 
-      Once you have your logo image, replace the above with:
-      <img 
-        src="/logo.png" 
+        <img 
+        src="/ChatGPT Image Aug 5, 2025, 04_33_39 AM.png" 
         alt="AzureFlow Logo" 
         className="w-full h-full object-contain"
       />
