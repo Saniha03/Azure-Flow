@@ -12,13 +12,11 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { User } from "firebase/auth";
-import { getFunctions, httpsCallable } from "firebase/functions";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import {
   Calendar as CalendarIcon,
   Save,
-  Send,
   Trash,
   Download,
   ChevronLeft,
@@ -395,50 +393,6 @@ function CalendarPage({ user }: CalendarProps) {
     } catch (error) {
       console.error("Error deleting entry:", error);
       setMessage("Failed to delete entry.");
-    }
-  };
-
-  const handleSendToPartner = async () => {
-    if (!user) {
-      setMessage("Please sign in to send to partner.");
-      return;
-    }
-    if (!selectedEntry && !formData) {
-      setMessage("No entry to send.");
-      return;
-    }
-    try {
-      const docRef = doc(db, `users/${user.uid}/settings/partner`);
-      const docSnap = await getDoc(docRef);
-      if (!docSnap.exists() || !docSnap.data().email) {
-        setMessage("Please set a partner email in Partner Settings.");
-        return;
-      }
-      const partnerEmail = docSnap.data().email;
-      const entry = selectedEntry || formData;
-      const emailText = `
-          AzureFlow💙 Period Log
-          Date: ${entry.date}
-          Flow: ${entry.flow}
-          Symptoms: ${entry.symptoms.join(", ") || "None"}
-          Mood: ${entry.mood || "N/A"}
-          Sleep: ${entry.sleep || "N/A"} hours
-          Steps: ${entry.steps || "N/A"}
-          Exercise: ${entry.exercise || "N/A"}
-          Diet: ${entry.diet || "N/A"}
-          Cervical Fluid: ${entry.cervical || "N/A"}
-          Notes: ${entry.notes || "N/A"}
-        `;
-      const sendEmail = httpsCallable(getFunctions(), "sendPartnerEmail");
-      await sendEmail({
-        to: partnerEmail,
-        subject: `AzureFlow💙 Period Log for ${entry.date}`,
-        text: emailText,
-      });
-      setMessage("Entry sent to partner successfully!");
-    } catch (error) {
-      console.error("Error sending email:", error);
-      setMessage("Failed to send entry to partner.");
     }
   };
 
@@ -864,18 +818,13 @@ function CalendarPage({ user }: CalendarProps) {
                     Diet
                   </label>
                   <textarea
-                    name="notes"
-                    value={formData.notes ?? ""}
+                    name="diet"
+                    value={formData.diet}
                     onChange={handleFormChange}
-                    placeholder="Additional notes"
+                    placeholder="Diet notes"
                     className="w-full border border-gray-200 p-2 rounded-lg text-sm focus:ring-2 focus:ring-royal-blue focus:border-transparent min-h-[80px]"
                     rows={3}
-                    maxLength={500}
-                    aria-describedby="notes-hint"
                   ></textarea>
-                  <p id="notes-hint" className="text-xs text-gray-500 mt-1">
-                    {formData.notes.length}/500 characters
-                  </p>
                 </div>
                 <div>
                   <label className="block text-royal-blue text-sm font-medium mb-1">
@@ -909,7 +858,7 @@ function CalendarPage({ user }: CalendarProps) {
                     aria-describedby="notes-hint"
                   ></textarea>
                   <p id="notes-hint" className="text-xs text-gray-500 mt-1">
-                    {formData.notes.length}/500 characters
+                    {(formData.notes ?? "").length}/500 characters
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-3 mt-4">
@@ -919,14 +868,6 @@ function CalendarPage({ user }: CalendarProps) {
                   >
                     <Save size={16} />
                     <span>Save</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSendToPartner}
-                    className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-2 rounded-xl hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
-                  >
-                    <Send size={16} />
-                    <span>Send</span>
                   </button>
                   {selectedEntry && (
                     <button
@@ -946,6 +887,9 @@ function CalendarPage({ user }: CalendarProps) {
                     Cancel
                   </button>
                 </div>
+                <p className="text-sm text-gray-600 mt-2 text-center">
+                  Email sharing is unavailable in the free version.
+                </p>
               </form>
               {message && (
                 <p
