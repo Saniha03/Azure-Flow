@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "saniharumc@gmail.com, // Replace with your Gmail address
+        user: "saniharumc@gmail.com", // Replace with your Gmail address
         pass: "tydo znjg wfih ldrp", // Replace with your Gmail App Password
       },
     });
