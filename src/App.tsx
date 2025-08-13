@@ -90,7 +90,7 @@ function App() {
       </div>
 
       {/* Global mobile styles */}
-      <style jsx global>{`
+      <style>{`
         /* Ensure mobile viewport is handled correctly */
         @media (max-width: 768px) {
           body {
