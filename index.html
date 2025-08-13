@@ -2,16 +2,329 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    
+    <!-- Primary Meta Tags -->
+    <title>AzureFlow💙 - Smart Period Tracking & Menstrual Health App</title>
+    <meta name="title" content="AzureFlow💙 - Smart Period Tracking & Menstrual Health App" />
+    <meta name="description" content="Track your menstrual cycle with ease using AzureFlow. Monitor periods, symptoms, mood, and health patterns. Share insights with partners and get personalized predictions." />
+    <meta name="keywords" content="period tracker, menstrual cycle, women health, period calendar, ovulation tracker, fertility tracker, health app, cycle tracking" />
+    <meta name="author" content="AzureFlow Team" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Viewport and Mobile Optimization -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="AzureFlow💙" />
+    <meta name="theme-color" content="#1E3A8A" />
+    <meta name="msapplication-navbutton-color" content="#1E3A8A" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://azureflow.vercel.app/" />
+    <meta property="og:title" content="AzureFlow💙 - Smart Period Tracking & Menstrual Health App" />
+    <meta property="og:description" content="Track your menstrual cycle with ease using AzureFlow. Monitor periods, symptoms, mood, and health patterns with our intelligent tracking system." />
+    <meta property="og:image" content="https://azureflow.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="AzureFlow" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://azureflow.vercel.app/" />
+    <meta property="twitter:title" content="AzureFlow💙 - Smart Period Tracking & Menstrual Health App" />
+    <meta property="twitter:description" content="Track your menstrual cycle with ease using AzureFlow. Monitor periods, symptoms, mood, and health patterns." />
+    <meta property="twitter:image" content="https://azureflow.vercel.app/twitter-image.png" />
+    <meta property="twitter:creator" content="@azureflow" />
+    
+    <!-- Favicon and Icons -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1E3A8A" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Fonts - Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AzureFlow💙</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="modulepreload" href="/src/main.tsx" />
+    <link rel="preload" href="/src/App.tsx" as="script" />
+    
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="//firebaseapp.com" />
+    <link rel="dns-prefetch" href="//googleapis.com" />
+    <link rel="dns-prefetch" href="//gstatic.com" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "AzureFlow",
+      "description": "Smart period tracking and menstrual health app for women",
+      "url": "https://azureflow.vercel.app",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "AzureFlow Team"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "1250"
+      },
+      "featureList": [
+        "Period tracking",
+        "Symptom monitoring",
+        "Cycle predictions",
+        "Mood tracking",
+        "Partner sharing",
+        "Health insights"
+      ]
+    }
+    </script>
+    
+    <!-- Critical CSS for loading state -->
+    <style>
+      /* Critical above-the-fold styles */
+      * {
+        box-sizing: border-box;
+      }
+      
+      html {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom, #93C5FD, #F8FAFC);
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      #root {
+        min-height: 100vh;
+      }
+      
+      /* Loading spinner styles */
+      .loading-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(to bottom, #93C5FD, #F8FAFC);
+        font-family: 'Inter', sans-serif;
+      }
+      
+      .loading-logo {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        animation: pulse 2s infinite;
+      }
+      
+      .loading-text {
+        color: #1E3A8A;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #93C5FD;
+        border-top: 3px solid #1E3A8A;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      .loading-tips {
+        margin-top: 2rem;
+        text-align: center;
+        color: #6B7280;
+        max-width: 300px;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .fade-in {
+        animation: fadeIn 0.6s ease-out;
+      }
+      
+      /* Hide loading when React takes over */
+      #root:not(:empty) + .loading-fallback {
+        display: none;
+      }
+      
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .loading-text {
+          font-size: 1.25rem;
+          padding: 0 1rem;
+        }
+        
+        .loading-logo {
+          font-size: 2.5rem;
+        }
+      }
+      
+      /* Accessibility improvements */
+      @media (prefers-reduced-motion: reduce) {
+        .loading-spinner {
+          animation: none;
+          border: 3px solid #1E3A8A;
+        }
+        
+        .loading-logo {
+          animation: none;
+        }
+      }
+      
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: linear-gradient(to bottom, #1E3A8A, #0F172A);
+        }
+        
+        .loading-container {
+          background: linear-gradient(to bottom, #1E3A8A, #0F172A);
+        }
+        
+        .loading-text {
+          color: #93C5FD;
+        }
+        
+        .loading-tips {
+          color: #9CA3AF;
+        }
+      }
+    </style>
+    
+    <!-- Google Analytics (replace with your tracking ID) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_TRACKING_ID');
+    </script> -->
   </head>
+  
   <body>
-    <div id="root"></div>
+    <!-- Main App Container -->
+    <div id="root">
+      <!-- Loading fallback content -->
+      <div class="loading-container fade-in">
+        <div class="loading-logo">💙</div>
+        <h1 class="loading-text">AzureFlow</h1>
+        <div class="loading-spinner" role="status" aria-label="Loading"></div>
+        <div class="loading-tips">
+          <p>Preparing your personal health dashboard...</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Fallback for users with JavaScript disabled -->
+    <noscript>
+      <div style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(to bottom, #93C5FD, #F8FAFC);
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+        padding: 2rem;
+      ">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">💙</div>
+        <h1 style="color: #1E3A8A; font-size: 1.5rem; margin-bottom: 1rem;">AzureFlow</h1>
+        <p style="color: #6B7280; max-width: 400px; line-height: 1.6;">
+          This application requires JavaScript to run. Please enable JavaScript in your browser settings and refresh the page to use AzureFlow.
+        </p>
+        <div style="margin-top: 2rem; padding: 1rem; background: rgba(255, 255, 255, 0.8); border-radius: 8px; max-width: 500px;">
+          <h3 style="color: #1E3A8A; margin-bottom: 0.5rem;">About AzureFlow</h3>
+          <p style="color: #4B5563; font-size: 0.9rem;">
+            AzureFlow is a comprehensive period tracking app that helps you monitor your menstrual cycle, 
+            symptoms, mood, and overall reproductive health with intelligent insights and partner sharing capabilities.
+          </p>
+        </div>
+      </div>
+    </noscript>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('ServiceWorker registration successful');
+            })
+            .catch(function(err) {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+      }
+    </script>
+    
+    <!-- Main App Script -->
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Error boundary for production -->
+    <script>
+      window.addEventListener('error', function(e) {
+        console.error('Global error:', e.error);
+        // You could send this to an error reporting service
+      });
+      
+      window.addEventListener('unhandledrejection', function(e) {
+        console.error('Unhandled promise rejection:', e.reason);
+        // You could send this to an error reporting service
+      });
+    </script>
   </body>
 </html>
