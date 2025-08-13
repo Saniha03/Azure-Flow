@@ -23,7 +23,6 @@ import {
   Download,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
 } from "lucide-react";
 
 interface CalendarProps {
@@ -173,7 +172,7 @@ function CalendarPage({ user }: CalendarProps) {
 
       const nextPeriodDate = new Date(lastPeriod);
       nextPeriodDate.setDate(
-        lastPeriod.getDate() + manualCycleStats.avgCycleLength
+        lastPeriod.getDate() + (manualCycleStats.avgCycleLength ?? 28)
       );
       const nextOvulationDate = new Date(nextPeriodDate);
       nextOvulationDate.setDate(nextPeriodDate.getDate() - 14);
@@ -280,8 +279,8 @@ function CalendarPage({ user }: CalendarProps) {
     );
     const cycleDay = daysSinceLastPeriod % manualCycleStats.avgCycleLength;
 
-    if (cycleDay < manualCycleStats.avgPeriodDuration) return "menstrual";
-    if (cycleDay >= manualCycleStats.avgPeriodDuration && cycleDay < 14)
+    if (cycleDay < (manualCycleStats.avgPeriodDuration ?? 5)) return "menstrual";
+    if (cycleDay >= (manualCycleStats.avgPeriodDuration ?? 5) && cycleDay < 14)
       return "follicular";
     if (cycleDay >= 14 && cycleDay < 16) return "ovulatory";
     return "luteal";
@@ -579,8 +578,6 @@ function CalendarPage({ user }: CalendarProps) {
             value={selectedDate}
             onClickDay={handleDateClick}
             tileClassName={tileClassName}
-            onMouseOver={({ date }) => handleTileHover(date)}
-            onMouseLeave={handleTileLeave}
             className="border-none rounded-lg"
             prevLabel={<ChevronLeft className="text-royal-blue" />}
             nextLabel={<ChevronRight className="text-royal-blue" />}
@@ -608,7 +605,7 @@ function CalendarPage({ user }: CalendarProps) {
               )}
             </div>
           )}
-          <style jsx>{`
+          <style>{`
             .react-calendar {
               width: 100%;
               background: transparent;
