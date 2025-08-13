@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 
 export const myFunction = functions.https.onCall(
-  (data: any, context: functions.https.CallableContext) =>
+  (data: any, context: functions.https.CallableContext) =>{
     import * as nodemailer from "nodemailer";
 
     const transporter = nodemailer.createTransport({
@@ -32,3 +32,4 @@ export const myFunction = functions.https.onCall(
         throw new functions.https.HttpsError("internal", "Failed to send email");
       }
     });
+  }
