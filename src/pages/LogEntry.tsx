@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
@@ -19,7 +19,7 @@ interface Entry {
   cervical: string;
   mood: string;
   notes: string;
-  timestamp: Date; // Added to match Firestore data structure
+  timestamp: Date;
 }
 
 function LogEntry({ user }: LogEntryProps) {
