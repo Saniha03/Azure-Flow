@@ -45,9 +45,7 @@ interface CalendarEntry {
 function CalendarPage({ user }: CalendarProps) {
   const [entries, setEntries] = useState<CalendarEntry[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedEntry, setSelectedEntry] = useState<CalendarEntry | null>(
-    null
-  );
+  const [selectedEntry, setSelectedEntry] = useState<CalendarEntry | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState<CalendarEntry>({
     date: new Date().toISOString().split("T")[0],
@@ -70,8 +68,11 @@ function CalendarPage({ user }: CalendarProps) {
     avgPeriodDuration: null,
   });
   const [message, setMessage] = useState<string>("");
+  const [tooltip, setTooltip] = useState<{
     date: string;
     entry: CalendarEntry | null;
+    x: number;
+    y: number;
   } | null>(null);
 
   const symptoms = [
@@ -95,12 +96,14 @@ function CalendarPage({ user }: CalendarProps) {
         const q = query(collection(db, `users/${user.uid}/entries`));
         const querySnapshot = await getDocs(q);
         const fetchedEntries = querySnapshot.docs.map(
-          (doc) =>
-            ({
+          (doc) => {
+            const data = doc.data();
+            return {
               id: doc.id,
-              ...doc.data(),
-              timestamp: doc.data().timestamp?.toDate() || new Date(),
-            } as CalendarEntry)
+              ...data,
+              timestamp: data.timestamp instanceof Date ? data.timestamp : data.timestamp?.toDate?.() || new Date(),
+            } as CalendarEntry;
+          }
         );
         setEntries(fetchedEntries);
       }
@@ -112,10 +115,10 @@ function CalendarPage({ user }: CalendarProps) {
         const docRef = doc(db, `users/${user.uid}/settings/cycleStats`);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setManualCycleStats(
-            docSnap.data() as {
-              avgCycleLength: number;
-              avgPeriodDuration: number;
+          const data = docSnap.data();
+          setManualCycleStats({
+              avgCycleLength: data.avgCycleLength ?? null,
+              avgPeriodDuration: data.avgPeriodDuration ?? null,
             }
           );
         }
@@ -130,7 +133,6 @@ function CalendarPage({ user }: CalendarProps) {
       return;
     }
 
-    // ADD validation
     if (
       !manualCycleStats.avgCycleLength ||
       !manualCycleStats.avgPeriodDuration
@@ -470,6 +472,41 @@ function CalendarPage({ user }: CalendarProps) {
     }));
   };
 
+  // Fixed tooltip handlers with proper mouse event handling
+  const handleTileMouseEnter = (event: React.MouseEvent, date: Date) => {
+    const dateString = date.toISOString().split("T")[0];
+    const entry = entries.find((e) => e.date === dateString) || null;
+    
+    // Get mouse position relative to viewport
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top;
+    
+    setTooltip({ 
+      date: dateString, 
+      entry,
+      x,
+      y
+    });
+  };
+
+  const handleTileMouseLeave = () => {
+    setTooltip(null);
+  };
+
+  // Custom tile content to add mouse event handlers
+  const tileContent = ({ date, view }: { date: Date; view: string }) => {
+    if (view !== 'month') return null;
+    
+    return (
+      <div
+        className="w-full h-full absolute inset-0 z-10"
+        onMouseEnter={(e) => handleTileMouseEnter(e, date)}
+        onMouseLeave={handleTileMouseLeave}
+      />
+    );
+  };
+
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
       <h1 className="text-3xl font-bold text-royal-blue text-center flex items-center justify-center space-x-2">
@@ -521,15 +558,25 @@ function CalendarPage({ user }: CalendarProps) {
             value={selectedDate}
             onClickDay={handleDateClick}
             tileClassName={tileClassName}
+            tileContent={tileContent}
             className="border-none rounded-lg"
             prevLabel={<ChevronLeft className="text-royal-blue" />}
             nextLabel={<ChevronRight className="text-royal-blue" />}
             prev2Label={null}
             next2Label={null}
           />
+          
+          {/* Fixed tooltip positioning and styling */}
           {tooltip && (
-            <div className="absolute z-50 bg-white p-3 rounded-lg shadow-lg border border-gray-200 max-w-xs">
-              <p className="text-sm font-semibold">{tooltip.date}</p>
+            <div 
+              className="fixed z-50 bg-white p-3 rounded-lg shadow-lg border border-gray-200 max-w-xs pointer-events-none"
+              style={{
+                left: `${tooltip.x}px`,
+                top: `${tooltip.y - 10}px`,
+                transform: 'translate(-50%, -100%)',
+              }}
+            >
+              <p className="text-sm font-semibold">{new Date(tooltip.date).toLocaleDateString()}</p>
               {tooltip.entry ? (
                 <div className="text-xs text-gray-600">
                   <p>
@@ -537,7 +584,7 @@ function CalendarPage({ user }: CalendarProps) {
                   </p>
                   <p>
                     <strong>Symptoms:</strong>{" "}
-                    {tooltip.entry.symptoms.join(", ") || "None"}
+                    {tooltip.entry.symptoms.length > 0 ? tooltip.entry.symptoms.join(", ") : "None"}
                   </p>
                   <p>
                     <strong>Mood:</strong> {tooltip.entry.mood || "N/A"}
@@ -548,10 +595,14 @@ function CalendarPage({ user }: CalendarProps) {
               )}
             </div>
           )}
+          
           <style>{`
             .react-calendar {
               width: 100%;
               background: transparent;
+            }
+            .react-calendar__tile {
+              position: relative;
             }
             .react-calendar__tile--active {
               background: #3b82f6 !important;
