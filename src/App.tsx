@@ -13,7 +13,11 @@ import { onAuthStateChanged, User } from "firebase/auth";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(
+    window.matchMedia("(max-width: 768px)").matches
+  );
 
+  // Handle authentication state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -21,13 +25,37 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  // Update isMobile on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <BrowserRouter>
-      <div className="flex flex-col md:flex-row min-h-screen bg-gradient-blue">
-        <div className="hidden md:block">
-          <Navbar user={user} isMobile={false} />
-        </div>
-        <main className="flex-grow p-6 flex justify-center">
+      <div className="flex min-h-screen bg-gradient-blue">
+        {/* Desktop Sidebar */}
+        {!isMobile && (
+          <div className="w-72 flex-shrink-0">
+            <Navbar user={user} isMobile={false} />
+          </div>
+        )}
+
+        {/* Main Content */}
+        <main
+          className="flex-grow p-6 flex justify-center"
+          style={{
+            paddingTop: isMobile ? 'var(--navbar-top-height)' : '0',
+            paddingBottom: isMobile ? 'var(--navbar-bottom-height)' : '0',
+            minHeight: isMobile
+              ? 'calc(100vh - var(--navbar-top-height) - var(--navbar-bottom-height))'
+              : '100vh',
+            overflowY: 'auto',
+          }}
+        >
           <div className="w-full max-w-3xl">
             <Routes>
               <Route path="/" element={<Home user={user} />} />
@@ -43,9 +71,9 @@ function App() {
             </Routes>
           </div>
         </main>
-        <div className="md:hidden">
-          <Navbar user={user} isMobile={true} />
-        </div>
+
+        {/* Mobile Navbar */}
+        {isMobile && <Navbar user={user} isMobile={true} />}
       </div>
     </BrowserRouter>
   );
