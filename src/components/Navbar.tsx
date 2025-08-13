@@ -37,26 +37,30 @@ interface Notification {
 function Navbar({ user, isMobile }: NavbarProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showUserMenu, setShowUserMenu] = useState<boolean>(false);
-  const [notifications, setNotifications] = useState<Notification[]>([]); // Updated to use Notification interface
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const location = useLocation();
   const provider = new GoogleAuthProvider();
 
-  // Fetch unread notifications
+  // Fetch notifications
   useEffect(() => {
     const fetchNotifications = async () => {
       if (user) {
         try {
           const q = query(collection(db, `users/${user.uid}/notifications`));
           const querySnapshot = await getDocs(q);
-          const unreadCount = querySnapshot.docs.filter(
-            (doc) => !doc.data().read
-          ).length;
-          setNotifications(unreadCount);
+          const fetchedNotifications = querySnapshot.docs.map(
+            (doc) =>
+              ({
+                id: doc.id,
+                read: doc.data().read || false,
+              } as Notification)
+          );
+          setNotifications(fetchedNotifications);
         } catch (error) {
           console.error("Error fetching notifications:", error);
         }
       } else {
-        setNotifications(0);
+        setNotifications([]);
       }
     };
     fetchNotifications();
@@ -438,7 +442,5 @@ function Navbar({ user, isMobile }: NavbarProps) {
     </nav>
   );
 }
-
-export default Navbar;
 
 export default Navbar;
