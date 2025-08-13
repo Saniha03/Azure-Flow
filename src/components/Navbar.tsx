@@ -15,7 +15,6 @@ import {
   Clock,
   LogIn,
   LogOut,
-  User as UserIcon,
   Settings,
   Bell,
   Search,
