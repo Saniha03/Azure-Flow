@@ -19,7 +19,7 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', className = '' }) => {
         alt="AzureFlow Logo" 
         className="w-full h-full object-contain"
       />
-      */}
+      
     </div>
   );
 };
