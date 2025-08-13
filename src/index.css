@@ -30,3 +30,174 @@ body {
     transform: translateX(0);
   }
 }
+/* mobile-fixes.css - Add this to your main CSS file or create as separate file */
+
+/* Mobile-specific fixes for scrolling and layout */
+@media (max-width: 768px) {
+  /* Ensure proper viewport handling */
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+  
+  #root {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Main content area scrolling */
+  main {
+    flex: 1;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 100px !important; /* Extra space for bottom nav */
+  }
+  
+  /* Bottom navigation styling */
+  .mobile-navbar {
+    height: 80px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Navigation items should be in single row */
+  .mobile-nav-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    padding: 8px 16px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-width: 0; /* Allow items to shrink */
+    padding: 4px;
+  }
+  
+  .mobile-nav-item span {
+    font-size: 10px;
+    margin-top: 2px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  
+  /* Form containers need extra bottom padding */
+  .form-container,
+  .log-entry-form,
+  .modal-content {
+    padding-bottom: 120px !important;
+  }
+  
+  /* Ensure modals work properly on mobile */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .modal-content {
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    margin: 20px;
+  }
+  
+  /* Input fields should not zoom on iOS */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px; /* Prevents zoom on iOS */
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    border-radius: 8px;
+  }
+  
+  /* Prevent horizontal scrolling */
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Calendar specific fixes */
+  .react-calendar {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Button spacing for mobile */
+  .mobile-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .mobile-button-group button {
+    flex: 1;
+    min-width: calc(50% - 4px);
+  }
+}
+
+/* Desktop styles - ensure desktop layout isn't affected */
+@media (min-width: 769px) {
+  html, body {
+    position: static;
+    overflow: auto;
+    height: auto;
+  }
+  
+  #root {
+    height: auto;
+    overflow: visible;
+    display: block;
+  }
+  
+  main {
+    overflow-y: auto;
+    padding-bottom: 0 !important;
+  }
+}
+
+/* Safe area insets for modern mobile devices */
+@supports (padding: max(0px)) {
+  @media (max-width: 768px) {
+    .mobile-navbar {
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+      height: calc(80px + max(0px, env(safe-area-inset-bottom)));
+    }
+    
+    main {
+      padding-bottom: calc(100px + max(0px, env(safe-area-inset-bottom))) !important;
+    }
+  }
+}
