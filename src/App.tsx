@@ -60,7 +60,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home user={user} />} />
               <Route path="/log" element={<LogEntry user={user} />} />
-              <Route path="/trends" element={<Trends />} />
+              <Route path="/trends" element=<Trends user={user} /> />
               <Route path="/calendar" element={<Calendar user={user} />} />
               <Route path="/history" element={<History user={user} />} />
               <Route path="/settings" element={<Settings user={user} />} />
