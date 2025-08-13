@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { User } from "firebase/auth";
 import { db } from "../firebase";
 import { collection, getDocs, query, updateDoc, doc } from "firebase/firestore";
-import { Bell, X, CheckCircle } from "lucide-react";
+import { Bell, CheckCircle } from "lucide-react";
 
 interface NotificationsProps {
   user: User | null;
