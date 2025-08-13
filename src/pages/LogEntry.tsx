@@ -19,6 +19,7 @@ interface Entry {
   cervical: string;
   mood: string;
   notes: string;
+  timestamp: Date; // Added to match Firestore data structure
 }
 
 function LogEntry({ user }: LogEntryProps) {
@@ -34,6 +35,7 @@ function LogEntry({ user }: LogEntryProps) {
     cervical: "",
     mood: "",
     notes: "",
+    timestamp: new Date(),
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -114,6 +116,7 @@ function LogEntry({ user }: LogEntryProps) {
         cervical: "",
         mood: "",
         notes: "",
+        timestamp: new Date(),
       });
     } catch (error) {
       console.error("Error saving entry:", error);
@@ -143,7 +146,7 @@ function LogEntry({ user }: LogEntryProps) {
             className={`w-full border p-3 rounded-lg focus:ring-2 transition-all duration-200 ${
               errors.date
                 ? "border-red-500"
-                : "border-gray-200 focus:ring-skyM focus:border-skyM"
+                : "border-gray-200 focus:ring-sky-500 focus:border-sky-500"
             }`}
             required
           />
@@ -159,7 +162,7 @@ function LogEntry({ user }: LogEntryProps) {
             name="flow"
             value={entry.flow}
             onChange={handleChange}
-            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-skyM focus:border-skyM transition-all duration-200"
+            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all duration-200"
           >
             <option value="None">None</option>
             <option value="Light">Light</option>
@@ -178,7 +181,7 @@ function LogEntry({ user }: LogEntryProps) {
                   type="checkbox"
                   checked={entry.symptoms.includes(symptom)}
                   onChange={() => handleSymptomToggle(symptom)}
-                  className="h-5 w-5 text-skyM focus:ring-skyM border-gray-200 rounded"
+                  className="h-5 w-5 text-sky-500 focus:ring-sky-500 border-gray-200 rounded"
                 />
                 <span className="text-gray-700">{symptom}</span>
               </label>
@@ -195,7 +198,7 @@ function LogEntry({ user }: LogEntryProps) {
             value={entry.mood}
             onChange={handleChange}
             placeholder="How are you feeling?"
-            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-skyM focus:border-skyM transition-all duration-200"
+            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all duration-200"
           />
         </div>
         <div>
@@ -211,7 +214,7 @@ function LogEntry({ user }: LogEntryProps) {
             className={`w-full border p-3 rounded-lg focus:ring-2 transition-all duration-200 ${
               errors.sleep
                 ? "border-red-500"
-                : "border-gray-200 focus:ring-skyM focus:border-skyM"
+                : "border-gray-200 focus:ring-sky-500 focus:border-sky-500"
             }`}
           />
           {errors.sleep && (
@@ -231,7 +234,7 @@ function LogEntry({ user }: LogEntryProps) {
             className={`w-full border p-3 rounded-lg focus:ring-2 transition-all duration-200 ${
               errors.steps
                 ? "border-red-500"
-                : "border-gray-200 focus:ring-skyM focus:border-skyM"
+                : "border-gray-200 focus:ring-sky-500 focus:border-sky-500"
             }`}
           />
           {errors.steps && (
@@ -248,7 +251,7 @@ function LogEntry({ user }: LogEntryProps) {
             value={entry.exercise}
             onChange={handleChange}
             placeholder="Exercise description"
-            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-skyM focus:border-skyM transition-all duration-200"
+            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all duration-200"
           />
         </div>
         <div>
@@ -260,7 +263,7 @@ function LogEntry({ user }: LogEntryProps) {
             value={entry.diet}
             onChange={handleChange}
             placeholder="Diet notes"
-            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-skyM focus:border-skyM transition-all duration-200"
+            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all duration-200"
             rows={3}
           ></textarea>
         </div>
@@ -272,7 +275,7 @@ function LogEntry({ user }: LogEntryProps) {
             name="cervical"
             value={entry.cervical}
             onChange={handleChange}
-            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-skyM focus:border-skyM transition-all duration-200"
+            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all duration-200"
           >
             <option value="">Select fluid type</option>
             <option value="Dry">Dry</option>
@@ -287,12 +290,17 @@ function LogEntry({ user }: LogEntryProps) {
           </label>
           <textarea
             name="notes"
-            value={entry.notes}
+            value={entry.notes ?? ""}
             onChange={handleChange}
             placeholder="Additional notes"
-            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-skyM focus:border-skyM transition-all duration-200"
+            className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all duration-200"
             rows={3}
+            maxLength={500}
+            aria-describedby="notes-hint"
           ></textarea>
+          <p id="notes-hint" className="text-xs text-gray-500 mt-1">
+            {(entry.notes ?? "").length}/500 characters
+          </p>
         </div>
         <button
           type="submit"
