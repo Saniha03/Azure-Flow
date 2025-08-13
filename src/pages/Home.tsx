@@ -16,6 +16,13 @@ interface CycleStats {
   nextOvulation: string | null;
 }
 
+interface Entry {
+  id: string;
+  flow: string;
+  date: string;
+  timestamp: Date;
+}
+
 function Home({ user }: HomeProps) {
   const [time, setTime] = useState<string>(new Date().toLocaleTimeString());
   const [cycleStats, setCycleStats] = useState<CycleStats>({
@@ -39,9 +46,11 @@ function Home({ user }: HomeProps) {
         try {
           const q = query(collection(db, `users/${user.uid}/entries`));
           const querySnapshot = await getDocs(q);
-          const entries = querySnapshot.docs.map((doc) => ({
+          const entries: Entry[] = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
+            flow: doc.data().flow || "None",
+            date: doc.data().date || "",
             timestamp: doc.data().timestamp?.toDate() || new Date(),
           }));
 
