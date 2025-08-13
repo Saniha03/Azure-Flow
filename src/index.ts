@@ -1,4 +1,7 @@
-import * as functions from "firebase-functions";
+import * as functions from 'firebase-functions';
+
+export const myFunction = functions.https.onCall(
+  (data: any, context: functions.https.CallableContext) =>
     import * as nodemailer from "nodemailer";
 
     const transporter = nodemailer.createTransport({
