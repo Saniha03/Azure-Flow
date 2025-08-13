@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { User } from "firebase/auth";
 import { db } from "../firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { Settings as SettingsIcon, Save, X } from "lucide-react";
+import { Settings as SettingsIcon, Save,  } from "lucide-react";
 
 interface SettingsProps {
   user: User | null;
