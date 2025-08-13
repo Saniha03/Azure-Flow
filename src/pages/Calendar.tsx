@@ -323,16 +323,6 @@ function CalendarPage({ user }: CalendarProps) {
     setIsModalOpen(true);
   };
 
-  const handleTileHover = (date: Date) => {
-    const dateString = date.toISOString().split("T")[0];
-    const entry = entries.find((e) => e.date === dateString) || null;
-    setTooltip({ date: dateString, entry });
-  };
-
-  const handleTileLeave = () => {
-    setTooltip(null);
-  };
-
   const handleFormChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
