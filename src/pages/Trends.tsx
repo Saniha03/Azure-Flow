@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebase"; // Assuming this is the same as in other files
+import { db } from "../firebase";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { User } from "firebase/auth";
 import { TrendingUp, AlertCircle } from "lucide-react";
@@ -99,14 +99,6 @@ function Trends({ user }: TrendsProps) {
       if (isFlow) {
         if (!currentPeriodStart) {
           currentPeriodStart = new Date(entry.date);
-          if (periodStarts.length > 0) {
-            // Calculate cycle length from previous period start
-            const prevStart = periodStarts[periodStarts.length - 1];
-            const cycleLength =
-              (currentPeriodStart.getTime() - prevStart.getTime()) /
-              (1000 * 60 * 60 * 24);
-            // We don't push yet, as we need full cycles
-          }
           periodStarts.push(currentPeriodStart);
         }
         currentDuration++;
