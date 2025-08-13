@@ -3,13 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Saniha03.github.io/Azure-Flow",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
@@ -41,7 +38,6 @@
     "postcss": "8.4.49",
     "tailwindcss": "3.4.16",
     "typescript": "^5.7.2",
-    "vite": "^6.0.3",
-    "gh-pages": "^5.0.0"
+    "vite": "^6.0.3"
   }
 }
