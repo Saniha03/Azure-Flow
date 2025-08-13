@@ -70,7 +70,6 @@ function CalendarPage({ user }: CalendarProps) {
     avgPeriodDuration: null,
   });
   const [message, setMessage] = useState<string>("");
-  const [tooltip, setTooltip] = useState<{
     date: string;
     entry: CalendarEntry | null;
   } | null>(null);
