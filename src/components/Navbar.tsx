@@ -37,7 +37,7 @@ interface Notification {
 function Navbar({ user, isMobile }: NavbarProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showUserMenu, setShowUserMenu] = useState<boolean>(false);
-  const [notifications, setNotifications] = useState<number>(0);
+  const [notifications, setNotifications] = useState<Notification[]>([]); // Updated to use Notification interface
   const location = useLocation();
   const provider = new GoogleAuthProvider();
 
@@ -128,9 +128,9 @@ function Navbar({ user, isMobile }: NavbarProps) {
                 className="relative p-2 hover:bg-white/10 rounded-lg transition-colors"
               >
                 <Bell size={20} />
-                {notifications > 0 && (
+                {notifications.length > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
-                    {notifications}
+                    {notifications.length}
                   </span>
                 )}
               </Link>
@@ -333,9 +333,9 @@ function Navbar({ user, isMobile }: NavbarProps) {
                 <Icon size={18} />
               </div>
               <span className="font-medium">{label}</span>
-              {path === "/notifications" && notifications > 0 && (
+              {path === "/notifications" && notifications.length > 0 && (
                 <span className="ml-auto bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {notifications}
+                  {notifications.length}
                 </span>
               )}
               {isActiveRoute(path) && path !== "/notifications" && (
@@ -349,14 +349,14 @@ function Navbar({ user, isMobile }: NavbarProps) {
         <div className="bg-white/10 rounded-xl p-4 mb-6 backdrop-blur-sm border border-white/20">
           <div className="flex items-center justify-between mb-2">
             <h4 className="font-semibold text-sky-100">Notifications</h4>
-            {notifications > 0 && (
+            {notifications.length > 0 && (
               <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                {notifications}
+                {notifications.length}
               </span>
             )}
           </div>
           <p className="text-sky-200 text-sm">
-            {notifications > 0
+            {notifications.length > 0
               ? "You have new updates waiting"
               : "No new notifications"}
           </p>
@@ -438,5 +438,7 @@ function Navbar({ user, isMobile }: NavbarProps) {
     </nav>
   );
 }
+
+export default Navbar;
 
 export default Navbar;
